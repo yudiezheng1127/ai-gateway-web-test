@@ -134,7 +134,8 @@ const DOC_ENTITY_ORG = {
   quotaIntegerErrorMsg: '配额总量必须为非负整数',
   quotaMaxErrorMsg: '配额总量超出允许范围',
   quotaDecimal: 5.3,
-  quotaOverMax: '66666666666666660000',
+  quotaTokenMax: 9999999999,
+  quotaOverMax: 10000000000,
   int32Max: '2147483647',
   // 2026-08-16: unit=RMB 时配额上限为 9000 万元（RMB_QUOTA_MAX）
   quotaRmbMax: 90000000,
@@ -213,7 +214,8 @@ const DOC_API_KEY = {
   quotaIntegerErrorMsg: '配额总量必须为非负整数',
   quotaMaxErrorMsg: '配额总量超出允许范围',
   quotaDecimal: 5.3,
-  quotaOverMax: '66666666666666660000',
+  quotaTokenMax: 9999999999,
+  quotaOverMax: 10000000000,
   descriptionMaxLength: 512,
   descriptionLengthErrorMsg: '描述不能超过512个字符',
   // 2026-08-16: unit=RMB 时配额上限为 9000 万元（RMB_QUOTA_MAX）

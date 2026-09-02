@@ -740,6 +740,21 @@ async function fillModelMappingRow(
   }
 }
 
+async function expectModelMappingSource(
+  page,
+  rowIndex,
+  expected,
+  drawerTitle = DRAWER_TITLE.createBusinessCluster,
+) {
+  const body = modelStepBody(page, drawerTitle);
+  const card = body
+    .locator('.llm-section-card')
+    .filter({ hasText: DOC_BUSINESS_CLUSTER.modelRedirectCard });
+  const row = card.locator('table tbody tr').nth(rowIndex);
+  const sourceInput = row.locator('input[placeholder*="原模型" i]').first();
+  await expect(sourceInput).toHaveValue(expected, { timeout: 10000 });
+}
+
 async function expectProviderFieldVisible(
   page,
   drawerTitle = DRAWER_TITLE.createBusinessCluster,
@@ -1813,6 +1828,7 @@ module.exports = {
   selectForwardModels,
   selectAllForwardModels,
   fillModelMappingRow,
+  expectModelMappingSource,
   fillProvider,
   expectProviderFieldVisible,
   expectProviderValue,
