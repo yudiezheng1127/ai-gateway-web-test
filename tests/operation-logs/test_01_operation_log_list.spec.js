@@ -215,6 +215,24 @@ test.describe('操作日志 - OL-L-05 资源类型筛选', () => {
   });
 
   test('验证资源类型 entity 筛选', async ({ page }) => {
+    const options = await olp.getResourceTypeFilterOptions(page);
+    expect(options).toEqual([
+      'entity',
+      'entity_type',
+      'api_key',
+      'provider',
+      'cluster',
+      'route',
+      'certificate',
+      'quota_plan',
+      'model_price',
+      'user',
+      'token',
+    ]);
+    expect(options).not.toEqual(
+      expect.arrayContaining(['domain', 'rate_limit_policy']),
+    );
+
     const response = await olp.filterByResourceType(page, 'entity');
     const query = parseQuery(response.url());
     expect(query.resource_type).toBe('entity');

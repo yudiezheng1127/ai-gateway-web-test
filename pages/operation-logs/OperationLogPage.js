@@ -380,8 +380,8 @@ async function expectChangeSummaryVisible(page) {
   await expect(drawer.locator('.json-viewer-wrap').first()).toBeVisible();
 }
 
-async function getActionFilterOptions(page) {
-  const trigger = searchSelectTrigger(page, SEARCH_SELECT.action);
+async function getSearchSelectOptions(page, placeholder) {
+  const trigger = searchSelectTrigger(page, placeholder);
   await trigger.click();
   await page.waitForTimeout(200);
   const options = await page
@@ -389,6 +389,14 @@ async function getActionFilterOptions(page) {
     .allTextContents();
   await page.keyboard.press('Escape');
   return options.map((t) => t.trim()).filter(Boolean);
+}
+
+async function getActionFilterOptions(page) {
+  return getSearchSelectOptions(page, SEARCH_SELECT.action);
+}
+
+async function getResourceTypeFilterOptions(page) {
+  return getSearchSelectOptions(page, SEARCH_SELECT.resourceType);
 }
 
 async function openDetailByRowText(page, rowText) {
@@ -585,6 +593,7 @@ module.exports = {
   expectPaginationPageNumbersVisible,
   expectActivePaginationPage,
   getActionFilterOptions,
+  getResourceTypeFilterOptions,
   openDetailByRowText,
   expectDetailDrawerOpen,
   detailDrawer,

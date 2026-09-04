@@ -106,6 +106,7 @@ const MSG = {
   parseYamlFailed: 'YAML 解析失败',
   importSucc: '导入成功',
   importFailed: '导入失败',
+  noPricingForProvider: '未找到提供商 {provider} 的模型定价',
 };
 
 const DRAWER_TITLE = {
@@ -319,6 +320,22 @@ async function searchField(page, field, keyword) {
     await input.fill(keyword);
     await page.waitForTimeout(500);
   }
+}
+
+async function expectProviderFilterSelected(page, provider) {
+  await expect(
+    modelPriceTable(page)
+      .searchArea()
+      .locator('.ivu-select-selected-value')
+      .filter({ hasText: provider }),
+  ).toBeVisible({ timeout: 15000 });
+}
+
+async function expectNoPricingForProvider(page, provider) {
+  await expectMessage(
+    page,
+    MSG.noPricingForProvider.replace('{provider}', provider),
+  );
 }
 
 async function expectSearchInputVisible(page, field) {
@@ -862,6 +879,10 @@ async function expectViewScopeVisible(page) {
   await expect(viewScope(page)).toBeVisible({ timeout: 10000 });
 }
 
+async function expectViewScopeHidden(page) {
+  await expect(viewScope(page)).toHaveCount(0);
+}
+
 function viewCard(scope, title) {
   return scope.locator('.ivu-card.info-card').filter({ hasText: title });
 }
@@ -1093,6 +1114,8 @@ module.exports = {
   rowAction,
   clickRowAction,
   searchField,
+  expectProviderFilterSelected,
+  expectNoPricingForProvider,
   expectSearchInputVisible,
   expectTableHeaders,
   openCreateDrawer,
@@ -1141,6 +1164,7 @@ module.exports = {
   fillCreateForm,
   viewScope,
   expectViewScopeVisible,
+  expectViewScopeHidden,
   viewInfoValue,
   viewKvEntries,
   viewTags,
