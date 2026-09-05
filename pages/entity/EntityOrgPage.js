@@ -233,6 +233,37 @@ async function fillEntityFormBasic(
   }
 }
 
+async function expectEntityNamePlaceholder(
+  page,
+  placeholder = DOC_ENTITY_ORG.namePlaceholder,
+  drawerTitle = DRAWER_TITLE.createEntity,
+) {
+  await expect(
+    entityOrgForm(page, drawerTitle).input('名称'),
+  ).toHaveAttribute('placeholder', placeholder);
+}
+
+async function expectEntityNameFormTip(
+  page,
+  texts = [DOC_ENTITY_ORG.nameRuleAtHint, DOC_ENTITY_ORG.nameRuleEdgeHint],
+  drawerTitle = DRAWER_TITLE.createEntity,
+) {
+  const tip = entityOrgForm(page, drawerTitle)
+    .item('名称')
+    .locator('.form-tip')
+    .first();
+  for (const text of texts) {
+    await expect(tip).toContainText(text);
+  }
+}
+
+async function expectEntityNameFieldValid(
+  page,
+  drawerTitle = DRAWER_TITLE.createEntity,
+) {
+  await entityOrgForm(page, drawerTitle).expectFieldValid('名称');
+}
+
 async function selectEntityFormSelect(
   page,
   label,
@@ -1766,6 +1797,9 @@ module.exports = {
   selectEntityBlockModels,
   expectEntityAllowModelsDefault,
   fillEntityFormBasic,
+  expectEntityNamePlaceholder,
+  expectEntityNameFormTip,
+  expectEntityNameFieldValid,
   selectEntityFormSelect,
   expectParentEntityOptionVisible,
   selectEntityQuotaUnlimited,
